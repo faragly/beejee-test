@@ -13,24 +13,23 @@ class Task extends Component {
     }
 
     handleChange() {
-        const {id, token, text, status} = this.props;
-        const newStatus = status === 0 ? 10: 0
+        const {id, text, status} = this.props;
+        const newStatus = status === 0 ? 10: 0;
 
         if (this.props.status !== newStatus) {
             this.props.onEdit(id, {
                 text,
-                status: newStatus,
-                token
+                status: newStatus
             });
         }
     }
 
     handleEdit(text) {
-        const {id, token, status} = this.props;
+        const {id, status} = this.props;
 
         if (this.props.text !== text) {
             this.props.onEdit(id, {
-                text, status, token
+                text, status
             });
         }
     }
@@ -40,9 +39,11 @@ class Task extends Component {
 
         return (
             <Fragment>
-                {error && <div class="bp3-callout bp3-intent-danger" style={{marginBottom: 10}}>
-                    {error}
-                </div>}
+                {error && id === editId
+                    ? <div class="bp3-callout bp3-intent-danger" style={{marginBottom: 10}}>
+                        {error}
+                    </div>
+                    : ''}
                 <Card className="Task" elevation={Elevation.ONE}>
                     {isLoading && id === editId ? <Spinner /> : <div>
                         <h3>{username}</h3>
@@ -56,9 +57,9 @@ class Task extends Component {
 }
 
 const mapStateToProps = ({
-    auth: {isAdmin, token},
+    auth: {isAdmin},
     edit: {id, isLoading, error}
-}) => ({isAdmin, isLoading, token, error, editId: id});
+}) => ({isAdmin, isLoading, error, editId: id});
 
 const mapDispatchToProps = (dispatch) => ({
     onEdit: (id, params) => dispatch(edit(id, params))

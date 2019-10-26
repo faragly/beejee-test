@@ -63,14 +63,15 @@ function rootReducer(state = initialState, {type, payload}) {
         case EDIT_LOADING:
             return {...state, edit: {...state.edit, isLoading: true, id: payload}};
         case SUCCESS_LOGIN:
-            return {...state, auth: {...state.auth, isLoading: false, isAuthorized: true, isAdmin: true, token: payload.token, errors: {}}};
+            return {...state, auth: {...state.auth, isLoading: false, isAuthorized: true, isAdmin: true, token: payload.token, errors: {}}, edit: {error: null}};
         case SUCCESS_CREATE: {
             const data = {
                 ...state.data,
-                tasks: [...state.data.tasks, payload]
+                tasks: [...state.data.tasks, payload],
+                total_task_count: parseInt(state.data.total_task_count, 10) + 1
             };
 
-            return {...state, data, create: {...state.create, isLoading: false, errors: {}}};
+            return {...state, data, create: initialState.create};
         }
         case SUCCESS_EDIT: {
             const data = {
@@ -93,7 +94,7 @@ function rootReducer(state = initialState, {type, payload}) {
         case FAILED_CREATE:
             return {...state, create: {...state.create, isLoading: false, errors: payload}};
         case FAILED_EDIT:
-            return {...state, edit: {...initialState.edit, error: payload.token}};
+            return {...state, edit: {...state.edit, isLoading: false, error: payload.token}};
         case FILTER_TASKS:
             return {...state, filterParams: {...state.filterParams, ...payload}};
         case RECEIVE_TASKS:

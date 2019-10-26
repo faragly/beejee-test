@@ -74,7 +74,9 @@ class App extends Component {
                 </div>}
                 {
                     this.props.data.tasks && this.props.data.tasks.length
-                        ? this.props.data.tasks.map(task => <Task key={`task_${task.id}`} {...task} />)
+                        ? this.props.data.tasks
+                            .slice(0, 3)
+                            .map(task => <Task key={`task_${task.id}`} {...task} />)
                         : <Card>
                             <NonIdealState
                                 icon="search"

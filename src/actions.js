@@ -236,9 +236,12 @@ export const edit = (id, data = {}) => {
     return async (dispatch) => {
         dispatch(editLoading(id));
         try {
-            const formData  = new FormData();
-            for (const name in data) {
-                formData.append(name, data[name]);
+            const token = localStorage.getItem(LOCAL_STORAGE_KEY),
+                params = {...data, token},
+                formData  = new FormData();
+
+            for (const name in params) {
+                formData.append(name, params[name]);
             }
 
             const response = await fetch(`${baseUrl}edit/${id}?developer=Khalik`, {
@@ -250,6 +253,8 @@ export const edit = (id, data = {}) => {
             if (status === 'ok') {
                 return dispatch(successEdit(id, data));
             }
+
+            dispatch(loginDialog(true));
 
             throw message;
         } catch (error) {
