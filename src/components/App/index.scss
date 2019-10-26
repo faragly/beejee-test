@@ -1,0 +1,16 @@
+.App {
+    &__toolbar {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        select {
+            margin-right: 20px;
+        }
+    }
+
+    &__login-dialog {
+        width: 300px;
+    }
+}
